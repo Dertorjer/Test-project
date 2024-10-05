@@ -64,7 +64,7 @@ class SalaryCalculatorView(APIView):
                 working=serializer.validated_data['working_days'],
                 sick=serializer.validated_data['sick_days'],
                 holiday=serializer.validated_data['holiday_days'],
-                vacation=serializer.validated_data['holiday_days'],
+                vacation=serializer.validated_data['vacation_days'],
             )
 
             salary = calculator.calculate_salary(month_days=month_days)

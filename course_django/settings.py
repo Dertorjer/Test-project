@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'general',
     'chat',
     'examples',
+
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
@@ -59,10 +61,16 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'corsheaders.middleware.CorsMiddleware'
     # 'general.middlewares.RequestStatisticsMiddleware',
 ]
 
 ROOT_URLCONF = 'course_django.urls'
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+]
 
 TEMPLATES = [
     {
