@@ -33,7 +33,7 @@ class AbstractSalaryCalculate(ABC):
 class CalculateMonthRateSalary(AbstractSalaryCalculate):
     def __init__(self, employee: Employee):
         super().__init__(employee=employee)
-        self._daily_salary = 0
+        self._daily_salary = 80
 
     @staticmethod
     def _calculate_base_work_days(days_dict: dict[str, int]):
@@ -92,21 +92,30 @@ class CalculateMonthRateSalary(AbstractSalaryCalculate):
             vacation=vacation_days,
         )
 
-    def calculate_salary(self, month_days: WorkingDays) -> int:
+    def calculate_salary(self, days_dict: dict[str, int]) -> int:
+        # Перетворюємо словник днів у модель WorkingDays
+        month_days = self.get_days_count(days_dict=days_dict)
+
+        # Обчислюємо базову денну зарплату, використовуючи кількість базових робочих днів
         self._daily_salary = self._calculate_daily_salary(base_working_days=month_days.base_working_days)
 
+        # Розраховуємо зарплату за звичайні робочі дні
         working_days_salary = self._calculate_working_monthly_salary(working_days=month_days.working)
+        # Розраховуємо зарплату за лікарняні дні
         sick_monthly_salary = self._calculate_sick_monthly_salary(sick_days=month_days.sick)
+        # Розраховуємо зарплату за відпусткові дні
         vacation_monthly_salary = self._calculate_vacation_monthly_salary(vacation_days=month_days.vacation)
 
+        # Підсумовуємо усі складові зарплати
         salary = sum(
             (
                 working_days_salary,
                 sick_monthly_salary,
                 vacation_monthly_salary,
-            ),
+            )
         )
 
+        # Гарантуємо, що сума не перевищує місячну ставку співробітника
         return salary if salary <= self.employee.position.monthly_rate else self.employee.position.monthly_rate
 
     def save_salary(self, salary: int, date: datetime.date):

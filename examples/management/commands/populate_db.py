@@ -36,7 +36,7 @@ class Command(BaseCommand):
             last_name = fake.last_name()
             username = fake.unique.user_name()
             email = username + '@example.com'
-            password = 'password123'  # You might want to generate random passwords here
+            password = 'password123'
             employee = Employee.objects.create_user(
                 username=username,
                 first_name=first_name,
